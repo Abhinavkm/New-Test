@@ -30,7 +30,10 @@
                         data.forEach(function(coordinate) {
                             var marker = new google.maps.Marker({
                                 position: {lat: coordinate.lat, lng: coordinate.lng},
-                                map: map
+                                map: map,
+                                icon: {
+                                    url: 'http://maps.google.com/mapfiles/ms/icons/' + coordinate.color + '-dot.png'
+                                }
                             });
                         });
 
