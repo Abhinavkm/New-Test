@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Multiple Locations on Google Maps</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDEO0_2kf8146iPb4DiTgSZqgsMCtQYktQ"></script>
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+
+
+
+    <script>
+        function initMap() {
+            // Initialize map
+            var map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: 0, lng: 0},
+                zoom: 8
+            });
+
+
+
+            // Define the data to be sent in the POST request
+            var postData = JSON.stringify({
+                // Add any necessary data to be sent to the webhook
+            });
+
+
+
+            // Make HTTP POST request to the webhook
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'https://hook.eu1.make.com/gx121uuwuha3bl6etkijrsbme75qf577', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        var dynamicCoordinates = JSON.parse(xhr.responseText);
+
+
+
+                        // Add markers for each dynamic coordinate
+                        dynamicCoordinates.forEach(function(coordinate) {
+                            var marker = new google.maps.Marker({
+                                position: coordinate,
+                                map: map
+                            });
+                        });
+
+
+
+                        // Set map center based on average coordinates
+                        var bounds = new google.maps.LatLngBounds();
+                        dynamicCoordinates.forEach(function(coordinate) {
+                            bounds.extend(new google.maps.LatLng(coordinate.lat, coordinate.lng));
+                        });
+                        map.fitBounds(bounds);
+                    } else {
+                        console.error('Failed to fetch coordinates:', xhr.status);
+                    }
+                }
+            };
+            xhr.send(postData);
+        }
+    </script>
+
+
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDEO0_2kf8146iPb4DiTgSZqgsMCtQYktQ&callback=initMap"></script>
+</body>
+</html>
+ 
