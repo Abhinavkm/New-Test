@@ -15,7 +15,7 @@
             font-size: 14px;
             text-align: center;
             width: auto;
-			margin-top:-45px;
+            margin-top: -45px;
         }
     </style>
 </head>
@@ -28,28 +28,34 @@
                 center: {lat: 0, lng: 0} // Default center
             });
 
-            // Array of marker coordinates and colors
-           var markerData = [
-                {lat: 40.7128, lng: -74.0060, color: 'blue', label: 'Note 1'}, // New York
-                {lat: 34.0522, lng: -118.2437, color: 'red', label: 'Note 2'}, // Los Angeles
-                {lat: 51.5074, lng: -0.1278, color: 'green', label: 'Note 3'} // London
-                // Add more markers as needed
-            ];
-
-            // Create markers
-            markerData.forEach(function(markerInfo, index) {
-                var marker = new google.maps.Marker({
-                    position: {lat: markerInfo.lat, lng: markerInfo.lng},
-                    map: map,
-                    label: {
-                        text: markerInfo.label, // Note number
-                        className: "marker-label"
-                    },
-                    icon: {
-                        url: 'http://maps.google.com/mapfiles/ms/icons/' + markerInfo.color + '-dot.png',
-                        scaledSize: new google.maps.Size(32, 32) // Adjust size if needed
-                    }
+            // Send POST request to webhook endpoint
+            fetch('https://hook.eu1.make.com/gx121uuwuha3bl6etkijrsbme75qf577', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({}) // You can send any additional data if needed
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Create markers dynamically
+                data.forEach(function(markerInfo, index) {
+                    var marker = new google.maps.Marker({
+                        position: {lat: markerInfo.lat, lng: markerInfo.lng},
+                        map: map,
+                        label: {
+                            text: markerInfo.label, // Note number
+                            className: "marker-label"
+                        },
+                        icon: {
+                            url: 'http://maps.google.com/mapfiles/ms/icons/' + markerInfo.color + '-dot.png',
+                            scaledSize: new google.maps.Size(32, 32) // Adjust size if needed
+                        }
+                    });
                 });
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
             });
         }
     </script>
