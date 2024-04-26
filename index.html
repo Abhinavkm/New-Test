@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Multiple Locations on Google Maps</title>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDEO0_2kf8146iPb4DiTgSZqgsMCtQYktQ"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDEO0_2kf8146iPb4DiTgSZqgsMCtQYktQ&callback=initMap" async defer></script>
     <style>
         #map {
             height: 400px;
@@ -18,7 +18,7 @@
             // Initialize map
             var map = new google.maps.Map(document.getElementById('map'), {
                 center: {lat: 0, lng: 0},
-                zoom: 8
+                zoom: 3 // Adjusted zoom level to show all markers
             });
 
             // Hardcoded coordinates (for testing)
@@ -35,16 +35,7 @@
                     map: map
                 });
             });
-
-            // Set map center based on average coordinates
-            var bounds = new google.maps.LatLngBounds();
-            coordinates.forEach(function(coordinate) {
-                bounds.extend(new google.maps.LatLng(coordinate.lat, coordinate.lng));
-            });
-            map.fitBounds(bounds);
         }
     </script>
-
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDEO0_2kf8146iPb4DiTgSZqgsMCtQYktQ&callback=initMap"></script>
 </body>
 </html>
